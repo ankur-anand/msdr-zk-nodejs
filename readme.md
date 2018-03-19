@@ -8,13 +8,9 @@
 
 ## Installation
 
----
-
 `npm install --save msdr-zk`
 
 ## API.
-
----
 
 ### 1. connect(connectionOptions) ⇒ <code>Promise</code>
 
@@ -43,9 +39,8 @@ connect({
 
 ### 2. registerService(serviceOptions) ⇒ <code>Promise</code>
 
-    registerService register the service to the zookeeper node using the passed
-    options.
-    Examples:
+registerService register the service to the zookeeper node using the passed options.
+Examples:
 
 ```js
 registerService({
@@ -123,7 +118,5 @@ getAllChildren returns all service registered at the basePath.
 **Returns**: <code>Promise</code> - - that resloves to list of all services.
 
 #### License
-
----
 
 MIT <3
