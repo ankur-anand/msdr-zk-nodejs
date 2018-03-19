@@ -342,11 +342,12 @@ function setServiceConfigData(serviceConfigPath = null, data) {
     const _dataToSave = JSON.stringify({
       config: data
     });
-    zkConnection.setData("/test/demo", Buffer.from(_dataToSave), function(
+    zkConnection.setData(serviceConfigPath, Buffer.from(_dataToSave), function(
       error,
       stat
     ) {
       if (error) {
+        console.log(error);
         return reject(new Error(error.stack));
       }
       return resolve(stat);
