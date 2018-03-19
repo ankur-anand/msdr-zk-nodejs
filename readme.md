@@ -16,7 +16,7 @@
 
 ---
 
-1.  ### connect(connectionOptions) ⇒ <code>Promise</code>
+### 1. connect(connectionOptions) ⇒ <code>Promise</code>
 
 connect Initiate the connection to the provided server list (ensemble).
 Examples:
@@ -41,7 +41,8 @@ connect({
 
 > It's advisable to create the basePath as `persistent znodes` as Persistent znodes are useful for storing data that needs to be highly available and accessible and have a lifetime in the ZooKeeper's namespace until they're explicitly deleted.
 
-2.  ### registerService(serviceOptions) ⇒ <code>Promise</code>
+### 2. registerService(serviceOptions) ⇒ <code>Promise</code>
+
     registerService register the service to the zookeeper node using the passed
     options.
     Examples:
@@ -79,7 +80,7 @@ registerService({
 | serviceOptions.ip       | <code>string</code> | ip address of the running service.                                   |
 | serviceOptions.metadata | <code>object</code> | other metadata of the services line - healthcheck, tags, etc.        |
 
-3.  ### getServiceEndpoints(serviceName) ⇒ <code>Promise</code>
+### 3. getServiceEndpoints(serviceName) ⇒ <code>Promise</code>
 
 getServiceEndpoints returns all endpoint from the list of registered endpoints,
 given a service-name.
@@ -91,7 +92,7 @@ given a service-name.
 | ----------- | ------------------- | ------------ |
 | serviceName | <code>string</code> | service name |
 
-4.  ### getRandomServiceEndPoint(endPointsList, serviceName) ⇒ <code>Promise</code>
+### 4. getRandomServiceEndPoint(endPointsList, serviceName) ⇒ <code>Promise</code>
 
 getRandomServiceEndPoint returns a random endpoint from the list of registered endpoints.
 
@@ -103,7 +104,7 @@ getRandomServiceEndPoint returns a random endpoint from the list of registered e
 | endPointsList | <code>array</code>  | list of endpoints. |
 | serviceName   | <code>string</code> | service name.      |
 
-5.  ### getService(endPoint) ⇒ <code>Promise</code>
+### 5. getService(endPoint) ⇒ <code>Promise</code>
 
 getService return a object containing endpoint and metadata from the registered endpoint.
 
@@ -114,14 +115,14 @@ getService return a object containing endpoint and metadata from the registered 
 | -------- | ------------------- | ------------------------- |
 | endPoint | <code>string</code> | Full Path of the endPoint |
 
-6.  ### getAllChildren() ⇒ <code>Promise</code>
+### 6. getAllChildren() ⇒ <code>Promise</code>
 
 getAllChildren returns all service registered at the basePath.
 
 **Kind**: global function  
 **Returns**: <code>Promise</code> - - that resloves to list of all services.
 
-####License
+#### License
 
 ---
 
