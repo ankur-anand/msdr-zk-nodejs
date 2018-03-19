@@ -117,6 +117,30 @@ getAllChildren returns all service registered at the basePath.
 **Kind**: global function  
 **Returns**: <code>Promise</code> - - that resloves to list of all services.
 
+### 7. getServiceConfigData(serviceConfigPath) ⇒ <code>Promise</code>
+
+getServiceConfigData returns the configuration data for the
+particular service.
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - - that resolves with the config data
+
+| Param             | Type                | Default           | Description                  |
+| ----------------- | ------------------- | ----------------- | ---------------------------- |
+| serviceConfigPath | <code>string</code> | <code>null</code> | config store path of service |
+
+### 8. setServiceConfigData(serviceConfigPath) ⇒ <code>Promise</code>
+
+setServiceConfigData returns the configuration data for the
+particular service.
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - - that resolves with stat of the node.
+
+| Param             | Type                | Default           | Description                  |
+| ----------------- | ------------------- | ----------------- | ---------------------------- |
+| serviceConfigPath | <code>string</code> | <code>null</code> | config store path of service |
+
 #### License
 
 MIT <3

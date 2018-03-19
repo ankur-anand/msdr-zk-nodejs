@@ -307,11 +307,60 @@ function getAllChildren() {
   });
 }
 
+/**
+ * getServiceConfigData returns the configuration data for the
+ * particular service.
+ * @param {string} serviceConfigPath - config store path of service
+ * @return {Promise} - that resolves with the config data
+ */
+
+function getServiceConfigData(serviceConfigPath = null) {
+  return new Promise((resolve, reject) => {
+    if (!serviceConfigPath) return reject(new Error("path string is required"));
+    zkConnection.getData(serviceConfigPath, watcher, function(
+      error,
+      data,
+      stat
+    ) {
+      if (error) {
+        return reject(new Error(error.stack));
+      }
+      return resolve(JSON.parse(data.toString("utf8")));
+    });
+  });
+}
+
+/**
+ * setServiceConfigData returns the configuration data for the
+ * particular service.
+ * @param {string} serviceConfigPath - config store path of service
+ * @return {Promise} - that resolves with stat of the node.
+ */
+function setServiceConfigData(serviceConfigPath = null, data) {
+  return new Promise((resolve, reject) => {
+    if (!serviceConfigPath) return reject(new Error("path string is required"));
+    const _dataToSave = JSON.stringify({
+      config: data
+    });
+    zkConnection.setData("/test/demo", Buffer.from(_dataToSave), function(
+      error,
+      stat
+    ) {
+      if (error) {
+        return reject(new Error(error.stack));
+      }
+      return resolve(stat);
+    });
+  });
+}
+
 module.exports = {
   connect,
   registerService,
   getServiceEndpoints,
   getRandomServiceEndPoint,
   getService,
-  getAllChildren
+  getAllChildren,
+  getServiceConfigData,
+  setServiceConfigData
 };
