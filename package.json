@@ -1,8 +1,7 @@
 {
   "name": "msdr-zk",
-  "version": "1.0.0",
-  "description":
-    "\"discover service or register service for micro-services environment using zookeeper\"",
+  "version": "1.0.1",
+  "description": "\"discover service or register service for micro-services environment using zookeeper\"",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
