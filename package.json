@@ -1,5 +1,5 @@
 {
-  "name": "@ankuranand/msdr-zk",
+  "name": "msdr-zk",
   "version": "1.0.0",
   "description":
     "\"discover service or register service for micro-services environment using zookeeper\"",
