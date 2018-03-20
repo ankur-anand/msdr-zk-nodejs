@@ -9,6 +9,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install zookeeperd
   - sudo pip install --upgrade pip
+  - sudo pip install urllib3[secure] --upgrade
   - pip install zk-shell
   - zk-shell --run-once "create /services ''" localhost
   - zk-shell --run-once "create /services/endpoints ''" localhost 
