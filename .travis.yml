@@ -8,10 +8,8 @@ cache:
 before_install:
   - sudo apt-get update
   - sudo apt-get install zookeeperd
-  - bash -c "whereis zookeeper"
   - wget https://github.com/outbrain/zookeepercli/releases/download/v1.0.10/zookeepercli_1.0.10_amd64.deb
   - sudo apt-get install ./zookeepercli_1.0.10_amd64.deb
-  - bash -c "whereis zookeepercli"
   - /usr/bin/zookeepercli --servers=localhost:2181 -c creater "/services/endpoints/test" ""
 install:
   - npm install
