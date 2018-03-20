@@ -28,11 +28,8 @@ msdzkP.then(conn => {
     console.log("zk-disconnected stopping the process");
     process.exit(1);
   });
-  // NODE_CREATED - Watched node is created.
-  // NODE_DELETED - watched node is deleted.
-  // NODE_DATA_CHANGED - Data of watched node is changed.
-  // NODE_CHILDREN_CHANGED
 
+  // watch for event's
   msdzkConnection.on("NODE_CHILDREN_CHANGED", e => {
     console.log("Node Children changed on the path");
     console.log(e);
