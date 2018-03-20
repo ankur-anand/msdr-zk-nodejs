@@ -8,9 +8,10 @@ cache:
 before_install:
   - sudo apt-get update
   - sudo apt-get install zookeeperd
-  - sudo pip install --upgrade pip
-  - sudo pip install urllib3[secure] --upgrade
-  - pip install zk-shell
+  - wget https://github.com/outbrain/zookeepercli/releases/download/v1.0.10/zookeepercli_1.0.10_amd64.deb
+  - sudo apt-get install ./zookeepercli_1.0.10_amd64.deb
+  - bash -c "whereis zookeeper"
+  - bash -c "whereis zookeepercli"
   - zk-shell --run-once "create /services ''" localhost
   - zk-shell --run-once "create /services/endpoints ''" localhost 
   - zk-shell --run-once "create /services/endpoints/test ''" localhost
