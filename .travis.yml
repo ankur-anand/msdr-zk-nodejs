@@ -8,7 +8,6 @@ cache:
 before_install:
   - sudo apt-get update
   - sudo apt-get install zookeeperd
-  - sudo apt install -y python-pip
   - pip install zk-shell
   - zk-shell --run-once "create /services ''" localhost
   - zk-shell --run-once "create /services/endpoints ''" localhost 
