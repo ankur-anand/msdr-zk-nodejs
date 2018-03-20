@@ -8,9 +8,11 @@ cache:
 before_install:
   - sudo apt-get update
   - sudo apt-get install zookeeperd
-  - /usr/share/zookeeper/bin/zkcli --servers localhost:2181 create /services ""
-  - /usr/share/zookeeper/bin/zkcli --servers localhost:2181 create /services/endpoints ""
-  - /usr/share/zookeeper/bin/zkcli --servers localhost:2181 create /services/endpoints/test ""
+  - sudo apt install -y python-pip
+  - pip install zk-shell
+  - zk-shell --run-once "create /services ''" localhost
+  - zk-shell --run-once "create /services/endpoints ''" localhost 
+  - zk-shell --run-once "create /services/endpoints/test ''" localhost
 install:
   - npm install
 script:
