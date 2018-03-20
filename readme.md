@@ -1,6 +1,6 @@
 # msdr-zk-nodejs
 
-## A Simple ZooKeeper based Microservices Service Discovery and Registery library for node.js services.
+## A Simple ZooKeeper based Microservices Service Discovery and Registery library for node.js services, that automatically re-register the watch again on the path when data is requested for the first time.
 
 #### Important Point
 
