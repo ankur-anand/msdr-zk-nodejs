@@ -193,8 +193,8 @@ particular service.
 
 #### 8. setServiceConfigData(serviceConfigPath) ⇒ <code>Promise</code>
 
-setServiceConfigData returns the configuration data for the
-particular service.
+setServiceConfigData sets the configuration data on the
+particular path.
 
 **Kind**: global function  
 **Returns**: <code>Promise</code> - - that resolves with stat of the node.

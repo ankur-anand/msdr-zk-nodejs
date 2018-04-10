@@ -32,7 +32,7 @@ const watchEmitter = new MyEmitter(); // emitter to re-register the watch again.
         tags: ["api"]
       }
     }
-  })
+  }, zkConnection);
  * ```
  * @param {object} serviceOptions
  * @param {string} serviceOptions.name - name of the service to register as ephemeral znode at basePath+name.
@@ -41,17 +41,21 @@ const watchEmitter = new MyEmitter(); // emitter to re-register the watch again.
  * @param {string} serviceOptions.api - base service api.
  * @param {string} serviceOptions.ip - ip address of the running service.
  * @param {object} serviceOptions.metadata - other metadata of the services line - healthcheck, tags, etc.
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - That resolves to complete service path if the service gets registered or reject with error.
  */
-function registerService({
-  name = null,
-  port = null,
-  protocol = null,
-  api = null,
-  ip = null,
-  release = null,
-  metadata = {}
-}) {
+function registerService(
+  {
+    name = null,
+    port = null,
+    protocol = null,
+    api = null,
+    ip = null,
+    release = null,
+    metadata = {}
+  },
+  zkConn
+) {
   // service ip can be fetched from the network interface but that can sometimes
   // becomes inconsistents
 
@@ -62,6 +66,9 @@ function registerService({
     if (!api) return reject("Empty service api string");
     if (!ip) return reject("Empty service ip string");
     if (!release) return reject("Empty service release string");
+    if (!zkConn == null) {
+      zkConnection = zkConn;
+    }
     const _service_node = `${baseNodePath}/${name}`;
     const _endPoint = `${protocol}://${ip}:${port}${api}`;
     const _dataToSave = JSON.stringify({
@@ -239,11 +246,15 @@ watchEmitter.on("watch-triggered", event => {
  * getServiceEndpoints returns all endpoint from the list of registered endpoints,
  * given a service-name.
  * @param {string} serviceName - service name
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - that resloves to list of all endpoints
  */
-function getServiceEndpoints(serviceName) {
+function getServiceEndpoints(serviceName, zkConn) {
   assert.notEqual(serviceName, undefined, "Service Name is Empty");
   assert.notEqual(serviceName, null, "Service Name is Empty");
+  if (!zkConn == null) {
+    zkConnection = zkConn;
+  }
   const _endPoint = `${baseNodePath}/${serviceName}`;
   return new Promise((resolve, reject) => {
     zkConnection.getChildren(_endPoint, watcher, (_err, _children) => {
@@ -261,14 +272,18 @@ function getServiceEndpoints(serviceName) {
  * getRandomServiceEndPoint  returns a random endpoint from the list of registered endpoints.
  * @param {array} endPointsList - list of endpoints.
  * @param {string} serviceName - service name.
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - That resolves to a randomnly selected endpoint.
  */
-function getRandomServiceEndPoint(endPointsList, serviceName) {
+function getRandomServiceEndPoint(endPointsList, serviceName, zkConn) {
+  if (!zkConn == null) {
+    zkConnection = zkConn;
+  }
   return new Promise((resolve, reject) => {
     let random = Math.floor(Math.random() * 100) % endPointsList.length;
     const _re = endPointsList[random];
     const _endPoint = `${baseNodePath}/${serviceName}/${_re}`;
-    getService(_endPoint).then(_edata => {
+    getService(_endPoint, zkConn).then(_edata => {
       return resolve(_edata);
     });
   });
@@ -277,9 +292,13 @@ function getRandomServiceEndPoint(endPointsList, serviceName) {
 /**
  * getService  return a object containing endpoint and metadata from the registered endpoint.
  * @param {string} endPoint - Full Path of the endPoint
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - That resolves to a selected endpoint and metadata.
  */
-function getService(endPoint) {
+function getService(endPoint, zkConn) {
+  if (!zkConn == null) {
+    zkConnection = zkConn;
+  }
   return new Promise((resolve, reject) => {
     zkConnection.getData(endPoint, watcher, (_err, _ep) => {
       if (_err) {
@@ -292,9 +311,13 @@ function getService(endPoint) {
 
 /**
  * getAllChildren returns all service registered at the  basePath.
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - that resloves to list of all services.
  */
-function getAllChildren() {
+function getAllChildren(zkConn) {
+  if (!zkConn == null) {
+    zkConnection = zkConn;
+  }
   return new Promise((resolve, reject) => {
     zkConnection.getChildren(baseNodePath, watcher, (_err, _children) => {
       if (_err) return reject(_err);
@@ -311,10 +334,14 @@ function getAllChildren() {
  * getServiceConfigData returns the configuration data for the
  * particular service.
  * @param {string} serviceConfigPath - config store path of service
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - that resolves with the config data
  */
 
-function getServiceConfigData(serviceConfigPath = null) {
+function getServiceConfigData(serviceConfigPath = null, zkConn) {
+  if (!zkConn == null) {
+    zkConnection = zkConn;
+  }
   return new Promise((resolve, reject) => {
     if (!serviceConfigPath) return reject(new Error("path string is required"));
     zkConnection.getData(serviceConfigPath, watcher, function(
@@ -334,9 +361,13 @@ function getServiceConfigData(serviceConfigPath = null) {
  * setServiceConfigData returns the configuration data for the
  * particular service.
  * @param {string} serviceConfigPath - config store path of service
+ * @param {object} [zkConn] - Zookeeper connection (pass this explicitly if using the existing connection inside different module)
  * @return {Promise} - that resolves with stat of the node.
  */
-function setServiceConfigData(serviceConfigPath = null, data) {
+function setServiceConfigData(serviceConfigPath = null, data, zkConn) {
+  if (!zkConn == null) {
+    zkConnection = zkConn;
+  }
   return new Promise((resolve, reject) => {
     if (!serviceConfigPath) return reject(new Error("path string is required"));
     const _dataToSave = JSON.stringify({
@@ -347,7 +378,6 @@ function setServiceConfigData(serviceConfigPath = null, data) {
       stat
     ) {
       if (error) {
-        console.log(error);
         return reject(new Error(error.stack));
       }
       return resolve(stat);
