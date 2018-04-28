@@ -1,5 +1,5 @@
 // Example to get and get service config data
-const msdrZk = require("./index");
+const msdrZk = require("../index");
 const platform_config = {
   port: 3001,
   mongoDB: {

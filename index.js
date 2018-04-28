@@ -11,6 +11,23 @@ class MyEmitter extends EventEmitter {}
 const msdZkEmitter = new MyEmitter();
 const watchEmitter = new MyEmitter(); // emitter to re-register the watch again.
 
+// if json format
+function tryParseJSON(jsonString) {
+  try {
+    var o = JSON.parse(jsonString.toString("utf8"));
+
+    // Handle non-exception-throwing cases:
+    // Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking,
+    // but... JSON.parse(null) returns null, and typeof null === "object",
+    // so we must check for that, too. Thankfully, null is falsey, so this suffices:
+    if (o && typeof o === "object") {
+      return o;
+    }
+  } catch (e) {}
+
+  return jsonString.toString("utf8");
+}
+
 /**
  * registerService register the service to the zookeeper node using the passed
  * options.
@@ -304,7 +321,7 @@ function getService(endPoint, zkConn) {
       if (_err) {
         return reject(_err);
       }
-      return resolve(JSON.parse(_ep.toString("utf8")));
+      return resolve(tryParseJSON(_ep));
     });
   });
 }
@@ -352,7 +369,7 @@ function getServiceConfigData(serviceConfigPath = null, zkConn) {
       if (error) {
         return reject(new Error(error.stack));
       }
-      return resolve(JSON.parse(data.toString("utf8")));
+      return resolve(tryParseJSON(data));
     });
   });
 }
